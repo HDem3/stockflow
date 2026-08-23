@@ -10,3 +10,8 @@ async def root():
 async def health_check():
     return {"status": "ok"}
 
+@app.get("/info")
+async def info():
+    return {"name": "StockFlow", 
+            "version": "1.0.0",
+            "description": "Warehouse management API"}
