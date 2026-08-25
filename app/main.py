@@ -3,9 +3,12 @@ from sqlalchemy.orm import Session
 
 from app import models, schemas
 from app.database import engine, get_db
+from app.routers import products
 
 
 app= FastAPI()
+
+app.include_router(products.router) #include il router dei prodotti nell'app principale
 
 models.Base.metadata.create_all(bind=engine)
 

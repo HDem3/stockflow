@@ -4,10 +4,13 @@ from sqlalchemy.orm import Session
 from app import models, schemas
 from app.database import engine, get_db
 
-router= APIRouter()
+router= APIRouter(
+    prefix="/products", 
+    tags=["Products"]
+)
 
 
-@router.post("/products", response_model=schemas.ProductResponse)
+@router.post("", response_model=schemas.ProductResponse)
 async def create_product(product: schemas.ProductCreate, 
                          db: Session = Depends(get_db)):
     new_product = models.Product(
@@ -24,13 +27,13 @@ async def create_product(product: schemas.ProductCreate,
 
     return new_product
 
-@router.get("/products", response_model=list[schemas.ProductResponse])
+@router.get("", response_model=list[schemas.ProductResponse])
 def get_products(db: Session = Depends(get_db)):
     products = db.query(models.Product).all()
 
     return products
 
-@router.get("/products/{product_id}", response_model=schemas.ProductResponse)
+@router.get("/{product_id}", response_model=schemas.ProductResponse)
 def get_product(product_id: int, db: Session = Depends(get_db)):
     product = db.query(models.Product).filter(models.Product.id == product_id).first()
 
@@ -39,7 +42,7 @@ def get_product(product_id: int, db: Session = Depends(get_db)):
 
     return product
 
-@router.put("/products/{product_id}", response_model=schemas.ProductResponse)
+@router.put("/{product_id}", response_model=schemas.ProductResponse)
 def update_product(product_id: int, updated_product: schemas.ProductCreate, db: Session = Depends(get_db)):
     product = db.query(models.Product).filter(models.Product.id == product_id).first()
 
@@ -57,7 +60,7 @@ def update_product(product_id: int, updated_product: schemas.ProductCreate, db: 
 
     return product
 
-@router.delete("/products/{product_id}")
+@router.delete("/{product_id}")
 def delete_product(product_id: int, db: Session = Depends(get_db)):
     product = db.query(models.Product).filter(models.Product.id == product_id).first()
 
