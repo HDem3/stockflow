@@ -24,7 +24,7 @@ async def info():
             "version": "1.0.0",
             "description": "Warehouse management API"}
 
-@app.post("/products", response_model=models.ProductResponse)
+@app.post("/products", response_model=schemas.ProductResponse)
 async def create_product(product: schemas.ProductCreate, 
                          db: Session = Depends(get_db)):
     new_product = models.Product(
@@ -39,7 +39,7 @@ async def create_product(product: schemas.ProductCreate,
     db.commit()
     db.refresh(new_product)
 
-    return {"message": "Product created successfully"}
+    return new_product
 
 @app.get("/products", response_model=list[schemas.ProductResponse])
 def get_products(db: Session = Depends(get_db)):

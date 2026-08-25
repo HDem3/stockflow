@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel #stile json
 
 
 class ProductCreate(BaseModel):
