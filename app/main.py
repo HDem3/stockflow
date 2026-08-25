@@ -24,6 +24,7 @@ async def info():
             "version": "1.0.0",
             "description": "Warehouse management API"}
 
+"""
 @app.post("/products", response_model=schemas.ProductResponse)
 async def create_product(product: schemas.ProductCreate, 
                          db: Session = Depends(get_db)):
@@ -86,3 +87,4 @@ def delete_product(product_id: int, db: Session = Depends(get_db)):
 
     return {"message": "Product deleted successfully"}
 
+"""
