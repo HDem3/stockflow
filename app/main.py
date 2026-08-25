@@ -1,14 +1,16 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI
 from sqlalchemy.orm import Session
 
-from app import models, schemas
-from app.database import engine, get_db
-from app.routers import products
+from app import models
+from app.database import engine
+from app.routers import products, stock
 
 
 app= FastAPI()
 
 app.include_router(products.router) #include il router dei prodotti nell'app principale
+app.include_router(stock.router) #include il router dello stock nell'app principale
+
 
 models.Base.metadata.create_all(bind=engine)
 
