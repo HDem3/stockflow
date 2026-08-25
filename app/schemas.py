@@ -1,4 +1,4 @@
-from pydantic import BaseModel #stile json
+from pydantic import BaseModel, Field #stile json
 
 
 class ProductCreate(BaseModel):
@@ -19,3 +19,8 @@ class ProductResponse(BaseModel):
     model_config = {
         "from_attributes": True
     }
+
+class StockMovement(BaseModel):
+    product_id: int
+    quantity: int = Field(gt=0)
+    
