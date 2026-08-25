@@ -9,6 +9,7 @@ class Product(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
     sku = Column(String, unique=True, nullable=False)
+    description = Column(String, nullable=False)
     quantity = Column(Integer, default=0)
     price = Column(Float, nullable=False)
-    description = Column(String, nullable=False)
+    

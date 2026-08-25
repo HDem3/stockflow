@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine #collegamento tra sqlalchemy e il database
 from sqlalchemy.orm import sessionmaker #tipo il connect di sqlite3
-from sqlalchemy.orm import declarative_base #tipo il basemodel di pydantic
+from sqlalchemy.orm import declarative_base #tipo il basemodel di pydantic ma per sqlalchemy
 from dotenv import load_dotenv
 import os
 
