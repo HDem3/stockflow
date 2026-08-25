@@ -59,7 +59,8 @@ def delete_product(product_id: int, db: Session = Depends(get_db)):
     
     return {"message": "Product deleted successfully"}
 
+# recupero dei prodotti con quantità inferiore o uguale a una soglia specificata
 @router.get("/low-stock/{threshold}", response_model=list[schemas.ProductResponse])
 def get_low_stock_products(threshold: int, db: Session = Depends(get_db)):
-    
+
     return product_service.get_low_stock_products(db, threshold)
