@@ -20,9 +20,12 @@ async def create_product(product: schemas.ProductCreate,
 
 # recupero di tutti i prodotti
 @router.get("", response_model=list[schemas.ProductResponse])
-def get_products(db: Session = Depends(get_db)):
+def get_products(db: Session = Depends(get_db),
+                 search: str | None = None,
+                 min_price: float | None = None,
+                 max_price: float | None = None,):
     
-    return product_service.get_products(db)
+    return product_service.get_products(db, search, min_price, max_price)
 
 # recupero di un prodotto specifico per ID
 @router.get("/{product_id}", response_model=schemas.ProductResponse)

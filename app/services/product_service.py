@@ -20,9 +20,23 @@ def create_product(db: Session, product: schemas.ProductCreate):
     return new_product
 
 # funzione di servizio per il recupero di tutti i prodotti
-def get_products(db: Session):
+def get_products(db: Session,
+                 search: str | None = None,
+                 min_price: float | None = None,
+                 max_price: float | None = None,):
 
-    return db.query(models.Product).all()
+    query = db.query(models.Product)
+
+    if search:
+        query = query.filter(models.Product.name.ilike(f"%{search}%"))
+
+    if min_price is not None:
+        query = query.filter(models.Product.price >= min_price)
+
+    if max_price is not None:
+        query = query.filter(models.Product.price <= max_price)
+
+    return query.all()
 
 # funzione di servizio per il recupero di un prodotto specifico per ID
 def get_product_by_id(db: Session, product_id: int):
