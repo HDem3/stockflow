@@ -24,11 +24,12 @@ def get_products(db: Session = Depends(get_db),
                  search: str | None = None,
                  min_price: float | None = None,
                  max_price: float | None = None,
+                 max_stock: int | None = None,
                  order_by: str | None = None,
                  descending: bool = False
                  ):
     
-    return product_service.get_products(db, search, min_price, max_price, order_by, descending)
+    return product_service.get_products(db, search, min_price, max_price, max_stock, order_by, descending)
 
 # recupero di un prodotto specifico per ID
 @router.get("/{product_id}", response_model=schemas.ProductResponse)

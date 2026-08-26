@@ -24,6 +24,7 @@ def get_products(db: Session,
                  search: str | None = None,
                  min_price: float | None = None,
                  max_price: float | None = None,
+                 max_stock: int | None = None,
                  order_by: str | None = None,
                  descending: bool = False
                  ):
@@ -38,6 +39,9 @@ def get_products(db: Session,
 
     if max_price is not None:
         query = query.filter(models.Product.price <= max_price)
+
+    if max_stock is not None:
+        query = query.filter(models.Product.quantity <= max_stock)
 
     if order_by == "price":
         if descending:
@@ -76,5 +80,4 @@ def delete_product(db: Session, product: models.Product):
 def get_low_stock_products(db: Session, threshold: int):
 
     return db.query(models.Product).filter(models.Product.quantity <= threshold).all()
-
 
