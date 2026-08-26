@@ -31,3 +31,8 @@ def create_stockMovement(db: Session,product_id: int, movement: schemas.StockMov
     db.refresh(stock_movement)
 
     return stock_movement
+
+
+def get_stockMovements(db: Session):
+    
+    return db.query(models.StockMovement).all() 
