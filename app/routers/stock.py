@@ -1,48 +1,18 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from app import models, schemas
+from app import schemas
 from app.database import get_db
-
+from app.services import stock_service
 
 router= APIRouter(
-    prefix="/stock", 
+    prefix="/products/{product_id}", 
     tags=["Stock"]
 )
 
-@router.post("/in", response_model=schemas.ProductResponse)
-def stock_in(movement: schemas.StockMovement, 
-             db: Session = Depends(get_db)):
-    product = db.query(models.Product).filter(models.Product.id == movement.product_id).first()
+@router.post("/stock", response_model=schemas.StockMovementResponse)
+def create_stock_movement(product_id: int, 
+                          movement: schemas.StockMovementCreate, 
+                          db: Session = Depends(get_db)):
 
-    if not product:
-        raise HTTPException(status_code=404, detail="Product not found")
-
-    product.quantity += movement.quantity
-
-    db.commit()
-    db.refresh(product)
-
-    return product
-
-@router.post("/out", response_model=schemas.ProductResponse)
-def stock_out(movement: schemas.StockMovement, 
-             db: Session = Depends(get_db)):
-    product = db.query(models.Product).filter(models.Product.id == movement.product_id).first()
-
-    if not product:
-        raise HTTPException(status_code=404, detail="Product not found")
-
-    if product.quantity < movement.quantity:
-        raise HTTPException(
-            status_code=400,
-            detail="Stock insufficiente"
-        )
-
-    product.quantity -= movement.quantity
-
-    db.commit()
-    db.refresh(product)
-
-    return product
-
+    return stock_service.create_stockMovement(db, product_id, movement)

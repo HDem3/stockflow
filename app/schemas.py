@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field #stile json
+from pydantic import BaseModel, ConfigDict, Field #stile json
 
 
 class ProductCreate(BaseModel):
@@ -20,7 +20,16 @@ class ProductResponse(BaseModel):
         "from_attributes": True
     }
 
-class StockMovement(BaseModel):
+class StockMovementCreate(BaseModel):
+    quantity_change: int = Field(gt=0)
+    reason: str
+
+class StockMovementResponse(BaseModel):
+    id: int
     product_id: int
-    quantity: int = Field(gt=0)
+    quantity_change: int
+    reason: str
+    created_at: str
+
+    model_config = ConfigDict(from_attributes= True) #uguale a quello sopra questo piu adatto per pydantic
     
