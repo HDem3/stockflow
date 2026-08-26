@@ -19,11 +19,14 @@ def create_product(db: Session, product: schemas.ProductCreate):
 
     return new_product
 
-# funzione di servizio per il recupero di tutti i prodotti
+# funzione di servizio per il recupero di tutti i prodotti con filitri
 def get_products(db: Session,
                  search: str | None = None,
                  min_price: float | None = None,
-                 max_price: float | None = None,):
+                 max_price: float | None = None,
+                 order_by: str | None = None,
+                 descending: bool = False
+                 ):
 
     query = db.query(models.Product)
 
@@ -35,6 +38,12 @@ def get_products(db: Session,
 
     if max_price is not None:
         query = query.filter(models.Product.price <= max_price)
+
+    if order_by == "price":
+        if descending:
+            query = query.order_by(models.Product.price.desc())
+        else:
+            query = query.order_by(models.Product.price.asc())
 
     return query.all()
 
@@ -68,6 +77,4 @@ def get_low_stock_products(db: Session, threshold: int):
 
     return db.query(models.Product).filter(models.Product.quantity <= threshold).all()
 
-
-    
 
